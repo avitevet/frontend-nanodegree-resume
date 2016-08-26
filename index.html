@@ -36,8 +36,6 @@ need to load. You'll see a lot of <link>s to CSS files for styles and
 </head>
 <body>
   <div id="main">
-    Hello world!   <!-- You'll be deleting this line in the course -->
-
     <!--
     Everything from here to the <script> tag below is the skeleton of your
     website. Your code will add information to each of the sections of the
@@ -120,28 +118,56 @@ need to load. You'll see a lot of <link>s to CSS files for styles and
     /*
         an opening and closing set of slash asterisks for block comments.
     */
+		var sections = [
+			{
+				"classname" : "flex-item",
+				"id" : ["topContacts", "lets-connect"]
+			},
+			{
+				"classname" : "work-entry",
+				"id" : ["workExperience"]
+			},
+			{
+				"classname" : "project-entry",
+				"id" : ["projects"]
+			},
+			{
+				"classname" : "education-entry",
+				"id" : ["education"]
+			},
+		];
+		sections.forEach(function(section) {
+			if (document.getElementsByClassName(section.classname)) {
+				section.id.forEach(function(id) {
+					document.getElementById(id).style["background-color"] = "black";
+				});
+			}
+		});
 
 
-    if(document.getElementsByClassName('flex-item').length === 0) {
-      document.getElementById('topContacts').style.display = 'none';
-    }
+
+    // if(document.getElementsByClassName('flex-item').length === 0) {
+    //   document.getElementById('topContacts').style["background-color"] = 'black';
+    // }
     if(document.getElementsByTagName('h1').length === 0) {
-      document.getElementById('header').style.display = 'none';
+			document.getElementById('header').style["background-color"] = "black";
+      //document.getElementById('header').style.display = 'none';
     }
-    if(document.getElementsByClassName('work-entry').length === 0) {
-      document.getElementById('workExperience').style.display = 'none';
-    }
-    if(document.getElementsByClassName('project-entry').length === 0) {
-      document.getElementById('projects').style.display = 'none';
-    }
-    if(document.getElementsByClassName('education-entry').length === 0) {
-      document.getElementById('education').style.display = 'none';
-    }
-    if(document.getElementsByClassName('flex-item').length === 0) {
-      document.getElementById('lets-connect').style.display = 'none';
-    }
+    // if(document.getElementsByClassName('work-entry').length === 0) {
+		// 	document.getElementById('workExperience').style["background-color"] = 'black';
+    //   //document.getElementById('workExperience').style.display = 'none';
+    // }
+    // if(document.getElementsByClassName('project-entry').length === 0) {
+    //   document.getElementById('projects').style.display = 'none';
+    // }
+    // if(document.getElementsByClassName('education-entry').length === 0) {
+    //   document.getElementById('education').style.display = 'none';
+    // }
+    // if(document.getElementsByClassName('flex-item').length === 0) {
+    //   document.getElementById('lets-connect').style.display = 'none';
+    // }
     if(document.getElementById('map') === null) {
-      document.getElementById('mapDiv').style.display = 'none';
+      document.getElementById('mapDiv').style["background-color"] = "black";
     }
   </script>
 </body>
