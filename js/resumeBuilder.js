@@ -186,10 +186,9 @@ education.display = function() {
   });
 }
 
-bio.display();
-work.display();
-projects.display();
-education.display();
+[bio, work, projects, education].forEach(function(section) {
+	section.display();
+});
 
 var main = $("#main");
 //main.append(internationalizeButton);
