@@ -186,7 +186,8 @@ education.display = function() {
   });
 }
 
-[bio, work, projects, education].forEach(function(section) {
+var sections = [bio, work, projects, education];
+sections.forEach(function(section) {
 	section.display();
 });
 
