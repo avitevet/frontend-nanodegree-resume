@@ -1,3 +1,9 @@
+/* eslint-env browser, jquery */
+/* global HTMLskills, HTMLskillsStart, HTMLworkStart, HTMLworkEmployer, HTMLworkTitle
+HTMLworkDates, HTMLworkDescription, HTMLworkLocation, internationalizeButton,
+HTMLheaderRole, HTMLheaderName, HTMLmobile, HTMLemail, HTMLlocation, HTMLgithub,
+HTMLtwitter */
+
 /*
 This is empty on purpose! Your code to build the resume will go here.
 */
@@ -74,6 +80,7 @@ var education = {
 		{
 			"name" : "CWRU",
 			"location" : "Cleveland, OH",
+      "degree" : "Bachelor of Science",
 			"degree dates" : "1997 - 2001",
 			"url" : "case.edu",
 			"majors" : [
@@ -97,18 +104,101 @@ var education = {
 	]
 };
 
-if (bio.skills && bio.skills.length > 0) {
-	$("#header").append(HTMLskillsStart);
-	var skills = $("#skills");
-	bio.skills.forEach(function(skill) {
-		skills.append(HTMLskills.replace("%data%", skill));
-	})
+function template(templateStr, data) {
+  return templateStr.replace("%data%", data);
 }
 
-$("#workExperience").append(HTMLworkStart);
-var workEntryLast = $(".work-entry:last");
-for (job in work.jobs) {
-	var employer = HTMLworkEmployer.replace("%data%", work.jobs[job].employer);
-	var title = HTMLworkTitle.replace("%data%", work.jobs[job].title);
-	workEntryLast.append(employer + title);
+bio.display = function() {
+  var header = $("#header");
+  header.prepend(template(HTMLbioPic, bio.biopic));
+  header.prepend(template(HTMLheaderRole, bio.role));
+  header.prepend(template(HTMLheaderName, bio.name));
+
+  var topContacts = $("#topContacts");
+  topContacts.append(template(HTMLmobile, bio.contacts.mobile));
+  topContacts.append(template(HTMLemail, bio.contacts.email));
+  topContacts.append(template(HTMLlocation, bio.contacts.location));
+  topContacts.append(template(HTMLgithub, bio.contacts.github));
+  if (bio.contacts.twitter) {
+    topContacts.append(template(HTMLtwitter, bio.contacts.twitter));
+  }
+
+  header.append(template(HTMLwelcomeMsg, bio.welcomeMessage));
+  if (bio.skills && bio.skills.length > 0) {
+  	header.append(HTMLskillsStart);
+  	var skills = $("#skills");
+  	bio.skills.forEach(function(skill) {
+  		skills.append(HTMLskills.replace("%data%", skill));
+  	})
+  }
+}
+
+work.display = function() {
+  $("#workExperience").append(HTMLworkStart);
+  var workEntryLast = $(".work-entry:last");
+  for (var j in work.jobs) {
+    var job = work.jobs[j];
+    var employer = HTMLworkEmployer.replace("%data%", job.employer);
+    var title = HTMLworkTitle.replace("%data%", job.title);
+    var loc = HTMLworkLocation.replace("%data%", job.location);
+    var dates = HTMLworkDates.replace("%data%", job.dates);
+    var description = HTMLworkDescription.replace("%data%", job.description);
+    workEntryLast.append(employer + title + loc + dates + description);
+  }
+}
+
+projects.display = function() {
+  var projsroot = $("#projects");
+  for (var pIndex in projects.projects) {
+    var p = projects.projects[pIndex];
+    var projroot = projsroot.append(HTMLprojectStart).children().last();
+    projroot.append(template(HTMLprojectTitle, p.title));
+    projroot.append(template(HTMLprojectDates, p.dates));
+    projroot.append(template(HTMLprojectDescription, p.description));
+    p.images.forEach(function(img) {
+      projroot.append(template(HTMLprojectImage, img));
+    });
+  }
+}
+
+education.display = function() {
+  var eduSection = $("#education");
+  education.schools.forEach(function(school) {
+    var schoolSection = eduSection.append(HTMLschoolStart).children().last();
+    schoolSection.append(HTMLschoolName.replace("%data%", school.name) +
+      HTMLschoolDegree.replace("%data%", school.degree));
+    schoolSection.append(template(HTMLschoolDates, school["degree dates"]));
+    schoolSection.append(template(HTMLschoolLocation, school.location));
+    school.majors.forEach(function(major) {
+      schoolSection.append(template(HTMLschoolMajor, major));
+    });
+  });
+
+  eduSection.append(HTMLonlineClasses);
+
+  education.onlineCourses.forEach(function(course) {
+    // title, school, dates, url
+    var courseSection = eduSection.append(HTMLschoolStart).children().last();
+    courseSection.append(HTMLonlineTitle.replace("%data%", course.title) +
+      HTMLonlineSchool.replace("%data%", course.school));
+    courseSection.append(template(HTMLonlineDates, course.dates));
+    courseSection.append(template(HTMLonlineURL, course.url));
+  });
+}
+
+bio.display();
+work.display();
+projects.display();
+education.display();
+
+var main = $("#main");
+//main.append(internationalizeButton);
+$("#mapDiv").append(googleMap);
+
+
+function inName(fullname) {
+  var parts = fullname.split(/\s+/);
+  parts[0] = parts[0][0].toUpperCase() + parts[0].slice(1);
+  parts[1] = parts[1].toUpperCase();
+  return parts.join(" ");
 }
