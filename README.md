@@ -29,4 +29,4 @@ I'm also available to answer questions at github@avitevet.com.
 
 # License
 
-This is provided under the [MIT License](http://choosealicense.com/licenses/mit)
+This is provided under the [MIT License](http://choosealicense.com/licenses/mit).
